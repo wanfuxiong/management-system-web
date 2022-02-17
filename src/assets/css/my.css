@@ -1,0 +1,80 @@
+.base-header {
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+}
+
+.base-body {
+    padding: 20px 20px 0 20px;
+}
+
+.base-footer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.base-text {
+    color: var(--el-text-color-primary);
+    font-size: var(--el-font-size-base);
+}
+
+.base-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted;
+    transition: color var(--el-transition-duration);
+}
+
+.base-link:hover {
+    color: var(--el-color-primary);
+}
+
+.paragraph {
+    text-indent: 2em;
+    color: var(--el-text-color-primary);
+    font-size: var(--el-font-size-base);
+}
+
+.title {
+    color: var(--el-text-color-primary);
+    margin-bottom: 20px;
+}
+
+.title1 {
+    font-size: 32px;
+}
+
+.title2 {
+    font-size: 24px;
+}
+
+.title3 {
+    font-size: 16px;
+}
+
+.operation-row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    align-items: center;
+}
+
+.operation-row > * {
+    margin-right: 12px;
+    margin-bottom: 6px;
+}
+
+.operation-row > .el-input {
+    width: 200px;
+}
+
+/* 去掉多个按钮的左侧外边距 */
+.operation-row > .el-button + .el-button {
+    margin-left: 0;
+}
+
+.pagination-container {
+    text-align: right;
+    margin-top: 20px;
+}

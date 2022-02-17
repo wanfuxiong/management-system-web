@@ -1,0 +1,90 @@
+.el-main {
+    padding: 0;
+}
+
+/* 设为和header一样的60px */
+.el-menu {
+    --el-menu-item-height: 58px;
+}
+
+.el-menu--horizontal {
+    border-bottom: none;
+}
+
+/* 调整横向menu下拉图标的位置 */
+.el-menu--horizontal > .el-sub-menu .el-sub-menu__icon-arrow {
+    margin-top: 0;
+}
+
+/* dialog垂直居中 */
+.el-dialog {
+    width: 25%;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: calc(100% - 30px);
+    max-width: calc(100% - 30px);
+}
+
+/* dialog垂直居中 */
+.el-dialog .el-dialog__body {
+    flex: 1;
+    overflow: auto;
+    padding: 0;
+}
+
+.el-dialog .el-scrollbar {
+    margin: 10px 0;
+}
+
+.el-dialog .el-scrollbar__view {
+    padding: 0 20px;
+}
+
+.el-dialog .el-scrollbar > div {
+    max-height: calc(100vh - 170px);
+}
+
+/* 表单最后一个元素不需要外边距 */
+.el-form > .el-form-item:nth-last-child(1) {
+    margin-bottom: unset;
+}
+
+/* 给按钮加个过渡动画 */
+.el-button {
+    transition: background-color var(--el-transition-duration),
+    color var(--el-transition-duration),
+    border var(--el-transition-duration);
+}
+
+/* 给链接加个过渡动画（链接下划线的动画我不会弄，所以使用el-link时最好加上:underline="false"） */
+.el-link {
+    transition: background-color var(--el-transition-duration),
+    color var(--el-transition-duration),
+    border var(--el-transition-duration);
+}
+
+.el-image {
+    border-radius: var(--el-border-radius-base);
+}
+
+/* 本项目不使用组名，所以将其多余的内边距清除 */
+.el-menu-item-group__title {
+    padding: 0;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header > button {
+    height: unset;
+    padding: unset;
+}
