@@ -171,7 +171,7 @@ router.beforeEach((to, from, next) => {
                         }
                     })
                     .catch(error => {
-                        if (error.response) {
+                        if (error.response) {// 后端正常的情况
                             // 如果服务端告诉用户Token失效
                             if (error.response.status == 403 &&
                                 from.path == '/' &&
@@ -181,22 +181,9 @@ router.beforeEach((to, from, next) => {
                                 localStorage.removeItem('token');
                                 next({path: '/login'})
                             }
+                        } else {// 后端不正常（很可能是没开后端）的情况，跳转到首页
+                            next({path: '/'});
                         }
-
-                        // if (error.response) {// 后端正常的情况
-                        //     const status = error.response.status
-                        //     switch (status) {
-                        //         case 400:
-                        //         case 401:
-                        //         case 403:
-                        //             localStorage.removeItem('user_info');
-                        //             localStorage.removeItem('token');
-                        //             next({path: '/login'});
-                        //             break;
-                        //     }
-                        // } else {// 后端不正常（很可能是没开后端）的情况，跳转到首页
-                        //     next({path: '/'});
-                        // }
                     })
             } else {
                 // console.log("vuex存有路由")
