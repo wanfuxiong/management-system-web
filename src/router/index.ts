@@ -118,78 +118,86 @@ router.beforeEach((to, from, next) => {
             if (!store.state.sidebarMenuList?.length) {
                 // console.log("vuex没有路由")
                 // 向服务端发送请求校验token、获取路由后添加到vuex中
-                axios({
-                    url: '/web/sidebar',
-                    method: 'get',
-                    headers: {
-                        Authorization: token,// Authorization是后端yml中定义好的，如果后端改这个名字，那么前端也要改
-                    }
-                }).then((response) => {
-                    let result = response.data as Result;
-                    // console.log(result);
-                    if (result.code == 0) {// token有效
-                        if (to.path == '/login') {// 访问的是登录页面就跳到Home，可以开始正常使用国建安全培训各项功能
-                            next({path: '/home'});
-                        } else {// 别的页面随便访问，因为已经登录并且token有效
+                axios.get('/web/sidebar')
+                    .then((response) => {
+                        let result = response.data as Result;
+                        // console.log(result);
+                        if (result.code == 0) {// token有效
+                            if (to.path == '/login') {// 访问的是登录页面就跳到Home，可以开始正常使用国建安全培训各项功能
+                                next({path: '/home'});
+                            } else {// 别的页面随便访问，因为已经登录并且token有效
 
-                            // 后端根据用户权限返回该用户有权显示的侧边栏，并存放到vuex中，以供全局使用
-                            // 前端根据从后端返回的侧边栏数据进行路由动态绑定，并在Home页面中渲染，这样对应的用户才能通过存在的路由访问对应的页面
+                                // 后端根据用户权限返回该用户有权显示的侧边栏，并存放到vuex中，以供全局使用
+                                // 前端根据从后端返回的侧边栏数据进行路由动态绑定，并在Home页面中渲染，这样对应的用户才能通过存在的路由访问对应的页面
 
-                            // 存入vuex
-                            store.commit("setSidebarMenuList", result.data['sidebarMenuList'])
-                            store.commit("setAuthorities", result.data['authorities'])
+                                // 存入vuex
+                                store.commit("setSidebarMenuList", result.data['sidebarMenuList'])
+                                store.commit("setAuthorities", result.data['authorities'])
 
-                            // 动态添加路由
-                            result.data['sidebarMenuList'].forEach((menuItem: Menu) => {
-                                if (menuItem.children.length > 0) {// 有子级菜单
-                                    // console.log('有子级菜单')
-                                    menuItem.children.forEach(child => {
+                                // 动态添加路由
+                                result.data['sidebarMenuList'].forEach((menuItem: Menu) => {
+                                    if (menuItem.children.length > 0) {// 有子级菜单
+                                        // console.log('有子级菜单')
+                                        menuItem.children.forEach(child => {
+                                            // 转换路由
+                                            let route = convertMenuToRoute(child);
+                                            // 添加路由
+                                            if (route) {
+                                                router.addRoute("Home", route);
+                                            }
+                                        })
+                                    } else {// 没有子级菜单
+                                        // console.log('没有子级菜单')
                                         // 转换路由
-                                        let route = convertMenuToRoute(child);
+                                        let route = convertMenuToRoute(menuItem);
                                         // 添加路由
                                         if (route) {
                                             router.addRoute("Home", route);
                                         }
-                                    })
-                                } else {// 没有子级菜单
-                                    // console.log('没有子级菜单')
-                                    // 转换路由
-                                    let route = convertMenuToRoute(menuItem);
-                                    // 添加路由
-                                    if (route) {
-                                        router.addRoute("Home", route);
                                     }
-                                }
-                            });
+                                });
 
-                            // console.log(store.state.sidebarMenuList);
+                                // console.log(store.state.sidebarMenuList);
 
-                            next({path: to.path});// 一定要这么写，不能写next()
+                                next({path: to.path});// 一定要这么写，不能写next()
+                            }
+                        } else if (result.code == 1) {// token失效
+                            alert(result.msg);
+                            localStorage.removeItem('user_info');
+                            localStorage.removeItem('token');
+                            next({path: '/login'});
+                        } else {
+                            alert(result.msg);
                         }
-                    } else if (result.code == 1) {// token失效
-                        alert(result.msg);
-                        localStorage.removeItem('user_info');
-                        localStorage.removeItem('token');
-                        next({path: '/login'});
-                    } else {
-                        alert(result.msg);
-                    }
-                }).catch(error => {
-                    if (error.response) {// 后端正常的情况
-                        const status = error.response.status
-                        switch (status) {
-                            case 400:
-                            case 401:
-                            case 403:
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            // 如果服务端告诉用户Token失效
+                            if (error.response.status == 403 &&
+                                from.path == '/' &&
+                                to.path == '/login'
+                            ) {
                                 localStorage.removeItem('user_info');
                                 localStorage.removeItem('token');
-                                next({path: '/login'});
-                                break;
+                                next({path: '/login'})
+                            }
                         }
-                    } else {// 后端不正常（很可能是没开后端）的情况，跳转到首页
-                        next({path: '/'});
-                    }
-                });
+
+                        // if (error.response) {// 后端正常的情况
+                        //     const status = error.response.status
+                        //     switch (status) {
+                        //         case 400:
+                        //         case 401:
+                        //         case 403:
+                        //             localStorage.removeItem('user_info');
+                        //             localStorage.removeItem('token');
+                        //             next({path: '/login'});
+                        //             break;
+                        //     }
+                        // } else {// 后端不正常（很可能是没开后端）的情况，跳转到首页
+                        //     next({path: '/'});
+                        // }
+                    })
             } else {
                 // console.log("vuex存有路由")
                 if (to.path == '/login') {// 访问的是登录页面就跳到Home，可以开始正常使用各项功能

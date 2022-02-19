@@ -24,10 +24,9 @@ request.interceptors.request.use(config => {
 // 后置拦截
 request.interceptors.response.use(
     response => {// 后端正常，响应200
-        return response
+        return Promise.resolve(response)
     },
     error => {
-        console.log(error)
         if (error.response) {// 后端正常，响应非200
             const result = error.response.data as Result
             const status = error.response.status
@@ -57,6 +56,7 @@ request.interceptors.response.use(
                 type: 'error'
             })
         }
+        return Promise.reject(error)
     }
 )
 
