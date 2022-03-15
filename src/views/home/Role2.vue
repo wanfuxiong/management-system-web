@@ -220,14 +220,14 @@
 
 <script lang="ts">
 import {defineComponent, getCurrentInstance, onMounted, reactive, ref} from "vue";
-import Role from "@/api/role";
-import User from "@/api/user";
+import Role from "@/http/role";
+import User from "@/http/user";
 import {ElMessage} from "element-plus";
-import Result from "@/api/result";
-import axios from "@/axios";
+import Result from "@/http/result";
+import axios from "@/http/axios";
 import qs from "qs";
 import {formatDate} from "@/utils/my-utils";
-import Menu from "@/api/menu";
+import Menu from "@/http/menu";
 
 export default defineComponent({
     name: 'Role',

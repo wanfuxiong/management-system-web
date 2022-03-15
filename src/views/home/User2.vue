@@ -396,12 +396,12 @@
 <script lang="ts">
 import {computed, defineComponent, getCurrentInstance, onMounted, reactive, ref} from "vue";
 import {ElMessage} from 'element-plus'
-import User from "@/api/user";
-import axios from "@/axios";
+import User from "@/http/user";
+import axios from "@/http/axios";
 import qs from "qs";
 import xlsx from 'xlsx';
-import Role from "@/api/role";
-import Result from "@/api/result";
+import Role from "@/http/role";
+import Result from "@/http/result";
 import {formatDate} from "@/utils/my-utils";
 import UploadDialog from "@/components/UploadDialog.vue";
 

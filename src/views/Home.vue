@@ -168,7 +168,7 @@ import {
     ref
 } from 'vue';
 import {ElForm, ElMessage} from 'element-plus'
-import axios from "@/axios";
+import axios from "@/http/axios";
 import Result from "@/interface/result";
 import User from "@/interface/user";
 import Menu from "@/interface/menu";

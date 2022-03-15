@@ -95,7 +95,7 @@
 <script setup lang="ts">
 import {ComponentInternalInstance, getCurrentInstance, onMounted, reactive, ref} from "vue";
 import router from "@/router";
-import axios from "@/axios";
+import axios from "@/http/axios";
 import {ElForm, ElMessage, ElNotification} from 'element-plus';
 import qs from 'qs';
 import Logo from "@/components/IndexLink.vue";

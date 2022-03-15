@@ -241,11 +241,11 @@
 
 <script lang="ts">
 import {computed, defineComponent, getCurrentInstance, onMounted, reactive, ref, toRefs} from "vue";
-import User from "@/api/user";
+import User from "@/http/user";
 import {ElMessage} from "element-plus";
-import Result from "@/api/result";
-import Menu from "@/api/menu";
-import axios from "@/axios";
+import Result from "@/http/result";
+import Menu from "@/http/menu";
+import axios from "@/http/axios";
 import {formatDate} from "@/utils/my-utils";
 import * as ElIconModules from '@element-plus/icons-vue'
 

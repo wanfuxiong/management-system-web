@@ -408,7 +408,7 @@
 
 <script setup lang="ts">
 import {onMounted, reactive, ref} from "vue";
-import axios from "@/axios";
+import axios from "@/http/axios";
 import {ElForm, ElMessage} from "element-plus";
 import Result from "@/interface/result";
 import User from "@/interface/user";

@@ -105,7 +105,7 @@
 <script setup lang="ts">
 import {onMounted, reactive, ref} from "vue";
 import {ElMessage} from "element-plus/es";
-import axios from "@/axios";
+import axios from "@/http/axios";
 import Result from "@/interface/result";
 import Role from "@/interface/role";
 import {millisecond2StringDate} from "@/utils/date-utils";
