@@ -9,9 +9,7 @@
             <el-scrollbar>
                 <div id="login-body">
                     <el-card id="login-card">
-                        <div id="login-card-header">
-                            <span>欢迎</span>
-                        </div>
+                        <div id="login-card-header">欢迎</div>
                         <el-form
                             ref="loginFormRef"
                             :model="loginData"
@@ -225,16 +223,15 @@ onMounted(() => {
     overflow: hidden;
 }
 
+#login-card-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
 #login-card {
     width: 320px;
     height: auto;
-    padding: 10px;
-}
-
-#login-card-header {
-    margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: bold;
 }
 
 #login-captcha {
