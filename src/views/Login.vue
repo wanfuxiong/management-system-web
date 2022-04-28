@@ -60,7 +60,7 @@
                                     >
                                         <template #error>
                                             <div
-                                                v-if="loadingCaptcha"
+                                                v-if="captchaLoading"
                                                 class="image-slot"
                                             >
                                                 <el-icon class="is-loading">
@@ -106,18 +106,16 @@ import {
 import router from "@/router";
 import axios from "@/http/axios";
 import { ElForm, ElMessage, ElNotification } from "element-plus";
-import qs from "qs";
 import Logo from "@/components/IndexLink.vue";
 import Footer from "@/components/Footer.vue";
-import Result from "@/interface/result";
-
-const { proxy } = <ComponentInternalInstance>getCurrentInstance();
+import Result from "@/interface/Result";
+import { captcha } from "@/api/general";
 
 const loginFormRef = ref<InstanceType<typeof ElForm>>();
 
 const loading = ref(false);
 
-const loadingCaptcha = ref(false);
+const captchaLoading = ref(false);
 
 const loginData = reactive({
     username: "",
@@ -179,66 +177,10 @@ const handleLogin = (formEl: InstanceType<typeof ElForm> | undefined) => {
     formEl.validate((valid) => {
         if (valid) {
             // 登录信息填写无误
-            login();
         } else {
             return false;
         }
     });
-};
-
-const updateCaptcha = () => {
-    loadingCaptcha.value = true;
-    axios
-        .get("/captcha")
-        .then((response) => {
-            let result = <Result>response.data;
-            if (result.code == 0) {
-                captchaImg.value = result.data["captchaImg"];
-                loginData.captcha_key = result.data["captchaKey"];
-            }
-            loadingCaptcha.value = false;
-        })
-        .catch((error) => {
-            if (error.response) {
-                ElMessage({
-                    showClose: true,
-                    message: "获取验证码失败",
-                    type: "error",
-                });
-            }
-            loadingCaptcha.value = false;
-        });
-};
-
-const login = () => {
-    loading.value = true;
-    axios
-        .post("/login?" + qs.stringify(loginData))
-        .then((response) => {
-            let result = response.data as Result;
-            console.log(result);
-            if (result.code === 0) {
-                console.log(result);
-                let data = result.data;
-                localStorage.setItem("user_info", JSON.stringify(data));
-                proxy?.$store.commit(
-                    "setToken",
-                    response.headers["authorization"]
-                );
-                router.push({ path: "/home" });
-            } else {
-                updateCaptcha();
-                ElMessage({
-                    showClose: true,
-                    message: result.msg,
-                    type: "warning",
-                });
-            }
-            loading.value = false;
-        })
-        .catch((error) => {
-            loading.value = false;
-        });
 };
 
 const openNotification = () => {
@@ -254,13 +196,25 @@ const openNotification = () => {
     });
 };
 
+const updateCaptcha = () => {
+    captchaLoading.value = true;
+    captcha()
+        .then((captcha: Captcha) => {
+            captchaImg.value = captcha.captchaImg;
+            captchaLoading.value = false;
+        })
+        .catch((error) => {
+            captchaLoading.value = false;
+        });
+};
+
 onMounted(() => {
+    // openNotification();
     updateCaptcha();
-    openNotification();
 });
 </script>
 
-<style>
+<style scoped>
 #login-body {
     height: calc(100vh - 120px);
     min-height: 400px;

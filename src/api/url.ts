@@ -1,2 +1,2 @@
-const CAPTCHA = "/captcha";
-const LOGIN = "/login";
+export const CAPTCHA = "/captcha";
+export const LOGIN = "/login";
