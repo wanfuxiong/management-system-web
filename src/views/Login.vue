@@ -102,12 +102,13 @@ import {
     ref,
 } from "vue";
 import router from "@/router";
-import axios from "@/http/axios";
+import axios from "@/axios";
 import { ElForm, ElMessage, ElNotification } from "element-plus";
 import Logo from "@/components/IndexLink.vue";
 import Footer from "@/components/Footer.vue";
 import Result from "@/interface/Result";
 import { captcha } from "@/api/general";
+import LoginData from "@/interface/request/LoginData";
 
 const loginFormRef = ref<InstanceType<typeof ElForm>>();
 
@@ -115,12 +116,7 @@ const loading = ref(false);
 
 const captchaLoading = ref(false);
 
-const loginData = reactive({
-    username: "",
-    password: "",
-    captcha: "",
-    captcha_key: "",
-});
+const loginData = reactive<LoginData>(new LoginData());
 
 const rules = {
     username: [
@@ -175,6 +171,7 @@ const handleLogin = (formEl: InstanceType<typeof ElForm> | undefined) => {
     formEl.validate((valid) => {
         if (valid) {
             // 登录信息填写无误
+            login();
         } else {
             return false;
         }
@@ -204,6 +201,10 @@ const updateCaptcha = () => {
         .catch((error) => {
             captchaLoading.value = false;
         });
+};
+
+const login = () => {
+    loading.value = true;
 };
 
 onMounted(() => {

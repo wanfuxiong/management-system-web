@@ -25,7 +25,8 @@ request.interceptors.request.use((config) => {
 request.interceptors.response.use(
     (response) => {
         // 后端正常，响应200
-        return Promise.resolve(response);
+        const result: Result = response.data;
+        return Promise.resolve(result);
     },
     (error) => {
         if (error.response) {

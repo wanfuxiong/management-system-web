@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import store from "@/store";
-import axios from "@/http/axios";
+import axios from "@/axios";
 import Result from "@/interface/result";
 import Menu from "@/interface/menu";
 

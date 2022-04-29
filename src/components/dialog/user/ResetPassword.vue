@@ -3,21 +3,21 @@
 </template>
 
 <script setup lang="ts">
-import axios from "@/http/axios";
-import {ElMessage} from "element-plus";
+import axios from "@/axios";
+import { ElMessage } from "element-plus";
 import Result from "@/interface/result";
 
 const props = defineProps<{
-    data?: any
-}>()
+    data?: any;
+}>();
 
-const emit = defineEmits(['update-status'])
+const emit = defineEmits(["update-status"]);
 
 const resetPassword = (userId: number) => {
     setTimeout(() => {
-        console.log(userId)
-        emit('update-status', true)
-    }, 2000)
+        console.log(userId);
+        emit("update-status", true);
+    }, 2000);
     // axios.post('/web/user/password/reset', userId)
     //     .then(response => {
     //         let result = <Result>response.data;
@@ -40,17 +40,15 @@ const resetPassword = (userId: number) => {
     //     .catch(error => {
     //         emit('update-status')
     //     })
-}
+};
 const handleConfirm = () => {
-    emit('update-status')
-    resetPassword(props.data.id)
-}
+    emit("update-status");
+    resetPassword(props.data.id);
+};
 
 defineExpose({
-    handleConfirm
-})
+    handleConfirm,
+});
 </script>
 
-<style>
-
-</style>
+<style></style>
