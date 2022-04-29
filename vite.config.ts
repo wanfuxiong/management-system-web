@@ -11,6 +11,8 @@ export default defineConfig({
         alias: {
             "@": resolve(__dirname, "./src"),
         },
+        // 省略后缀
+        extensions: [".vue", ".mjs", ".js", ".ts", ".jsx", ".tsx", ".json"],
     },
     build: {
         minify: "terser",
