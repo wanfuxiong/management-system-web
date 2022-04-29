@@ -99,7 +99,7 @@ import router from "@/router";
 import { ElForm, ElNotification } from "element-plus";
 import Logo from "@/components/IndexLink.vue";
 import Footer from "@/components/Footer.vue";
-import { captcha, login } from "@/api/general";
+import { captcha, login } from "@/api/general.ts";
 import LoginData from "@/interface/request/LoginData";
 import qs from "qs";
 import { ElMessage } from "element-plus/es";
