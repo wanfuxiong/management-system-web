@@ -9,7 +9,7 @@
             <el-scrollbar>
                 <div id="login-body">
                     <el-card id="login-card">
-                        <div id="login-card-header">欢迎</div>
+                        <div id="login-card-header">登录</div>
                         <el-form
                             ref="loginFormRef"
                             :model="loginData"
@@ -102,6 +102,7 @@ import Footer from "@/components/Footer.vue";
 import { captcha, login } from "@/api/general";
 import LoginData from "@/interface/request/LoginData";
 import qs from "qs";
+import { ElMessage } from "element-plus/es";
 
 const loginFormRef = ref<InstanceType<typeof ElForm>>();
 
@@ -110,7 +111,7 @@ const loading = ref(false);
 const captchaLoading = ref(false);
 
 const loginData = reactive<LoginData>(
-    new LoginData("fx_wan@foxmail.com", "8888888", "ab12", "")
+    new LoginData("fx_wan@foxmail.com", "88888888", "ab12", "")
 );
 
 const rules = {
@@ -188,16 +189,19 @@ const updateCaptcha = () => {
 };
 
 const startLogin = () => {
-    // loading.value = true;
-    console.log(qs.stringfy(loginData));
-    // login(loginData)
-    //     .then((result) => {
-    //         console.log(111);
-    //         loading.value = false;
-    //     })
-    //     .catch((error) => {
-    //         loading.value = false;
-    //     });
+    loading.value = true;
+    login(loginData)
+        .then((result) => {
+            ElMessage({
+                showClose: true,
+                message: "欢迎",
+                type: "success",
+            });
+            loading.value = false;
+        })
+        .catch((error) => {
+            loading.value = false;
+        });
 };
 
 const handleLogin = (formEl: InstanceType<typeof ElForm> | undefined) => {
@@ -230,9 +234,9 @@ onMounted(() => {
 }
 
 #login-card-header {
-    font-size: 20px;
+    font-size: var(--el-font-size-large);
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
 }
 
 #login-card {
