@@ -94,21 +94,14 @@
 </template>
 
 <script setup lang="ts">
-import {
-    ComponentInternalInstance,
-    getCurrentInstance,
-    onMounted,
-    reactive,
-    ref,
-} from "vue";
+import { onMounted, reactive, ref } from "vue";
 import router from "@/router";
-import axios from "@/axios";
-import { ElForm, ElMessage, ElNotification } from "element-plus";
+import { ElForm, ElNotification } from "element-plus";
 import Logo from "@/components/IndexLink.vue";
 import Footer from "@/components/Footer.vue";
-import Result from "@/interface/Result";
-import { captcha } from "@/api/general";
+import { captcha, login } from "@/api/general";
 import LoginData from "@/interface/request/LoginData";
+import qs from "qs";
 
 const loginFormRef = ref<InstanceType<typeof ElForm>>();
 
@@ -116,7 +109,9 @@ const loading = ref(false);
 
 const captchaLoading = ref(false);
 
-const loginData = reactive<LoginData>(new LoginData());
+const loginData = reactive<LoginData>(
+    new LoginData("fx_wan@foxmail.com", "8888888", "ab12", "")
+);
 
 const rules = {
     username: [
@@ -166,18 +161,6 @@ const rules = {
 
 const captchaImg = ref("");
 
-const handleLogin = (formEl: InstanceType<typeof ElForm> | undefined) => {
-    if (!formEl) return;
-    formEl.validate((valid) => {
-        if (valid) {
-            // 登录信息填写无误
-            login();
-        } else {
-            return false;
-        }
-    });
-};
-
 const openNotification = () => {
     ElNotification({
         title: "使用须知",
@@ -196,6 +179,7 @@ const updateCaptcha = () => {
     captcha()
         .then((captcha: Captcha) => {
             captchaImg.value = captcha.captchaImg;
+            loginData.captchaKey = captcha.captchaKey;
             captchaLoading.value = false;
         })
         .catch((error) => {
@@ -203,8 +187,29 @@ const updateCaptcha = () => {
         });
 };
 
-const login = () => {
-    loading.value = true;
+const startLogin = () => {
+    // loading.value = true;
+    console.log(qs.stringfy(loginData));
+    // login(loginData)
+    //     .then((result) => {
+    //         console.log(111);
+    //         loading.value = false;
+    //     })
+    //     .catch((error) => {
+    //         loading.value = false;
+    //     });
+};
+
+const handleLogin = (formEl: InstanceType<typeof ElForm> | undefined) => {
+    if (!formEl) return;
+    formEl.validate((valid) => {
+        if (valid) {
+            // 登录信息填写无误
+            startLogin();
+        } else {
+            return false;
+        }
+    });
 };
 
 onMounted(() => {

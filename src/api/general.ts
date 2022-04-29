@@ -1,6 +1,7 @@
+import qs from "qs";
 import axios from "@/axios";
 import { CAPTCHA, LOGIN } from "@/api/url";
-import Result from "@/interface/Result";
+import LoginData from "@/interface/request/LoginData";
 
 export const captcha = () => {
     return axios({
@@ -12,10 +13,11 @@ export const captcha = () => {
     });
 };
 
-export const login = () => {
+export const login = (data: LoginData) => {
     return axios({
         url: LOGIN,
         method: "post",
+        data: qs.stringfy(data),
     }).then((result) => {
         return Promise.resolve(result);
     });
